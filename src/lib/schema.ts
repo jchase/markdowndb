@@ -231,14 +231,9 @@ class MddbTag {
       // table.string("description");
     };
     const tableExists = await db.schema.hasTable(this.table);
-    console.log(`Checking if table ${this.table} exists: ${tableExists}`);
 
     if (!tableExists) {
-      console.log(`Table ${this.table} does not exist. Creating table...`);
       await db.schema.createTable(this.table, creator);
-      console.log(`Table ${this.table} created successfully.`);
-    } else {
-      console.log(`Table ${this.table} already exists. No action taken.`);
     }
   }
 
@@ -251,15 +246,13 @@ class MddbTag {
       throw new Error("Tags must have unique name");
     }
 
-    if (tags.length >= 500) {
-      const promises = [];
-      for (let i = 0; i < tags.length; i += 500) {
-        promises.push(db.batchInsert(Table.Tags, tags.slice(i, i + 500)));
-      }
-      return Promise.all(promises);
-    } else {
-      return db.batchInsert(Table.Tags, tags);
-    }
+    const promises =
+      tags.length >= 500
+        ? Array.from({ length: Math.ceil(tags.length / 500) }, (_, i) =>
+            db.batchInsert(Table.Tags, tags.slice(i * 500, (i + 1) * 500))
+          )
+        : [db.batchInsert(Table.Tags, tags)];
+    return Promise.all(promises);
   }
 }
 
