@@ -231,9 +231,14 @@ class MddbTag {
       // table.string("description");
     };
     const tableExists = await db.schema.hasTable(this.table);
+    console.log(`Checking if table ${this.table} exists: ${tableExists}`);
 
     if (!tableExists) {
+      console.log(`Table ${this.table} does not exist. Creating table...`);
       await db.schema.createTable(this.table, creator);
+      console.log(`Table ${this.table} created successfully.`);
+    } else {
+      console.log(`Table ${this.table} already exists. No action taken.`);
     }
   }
 
@@ -318,7 +323,6 @@ interface Task {
   start: string | null;
   scheduled: string | null;
   metadata: MetaData | null;
-
 }
 
 class MddbTask {
@@ -379,4 +383,16 @@ class MddbTask {
   }
 }
 
-export { MetaData, File, MddbFile, Link, MddbLink, Tag, MddbTag, FileTag, MddbFileTag, Task, MddbTask };
+export {
+  MetaData,
+  File,
+  MddbFile,
+  Link,
+  MddbLink,
+  Tag,
+  MddbTag,
+  FileTag,
+  MddbFileTag,
+  Task,
+  MddbTask,
+};

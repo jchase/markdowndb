@@ -170,7 +170,7 @@ export class MarkdownDB {
   private async saveDataToDisk(fileObjects: FileInfo[]) {
     await resetDatabaseTables(this.db);
     const properties = getUniqueProperties(fileObjects);
-    MddbFile.deleteTable(this.db);
+    await MddbFile.deleteTable(this.db);
     await MddbFile.createTable(this.db, properties);
 
     const filesToInsert = fileObjects.map(mapFileToInsert);
@@ -189,7 +189,7 @@ export class MarkdownDB {
 
     writeJsonToFile(".markdowndb/files.json", fileObjects);
     await MddbFile.batchInsert(this.db, filesToInsert);
-    // await MddbTag.batchInsert(this.db, tagsToInsert);
+    await MddbTag.batchInsert(this.db, tagsToInsert);
     await MddbFileTag.batchInsert(this.db, fileTagsToInsert);
     await MddbLink.batchInsert(this.db, getUniqueValues(linksToInsert));
     await MddbTask.batchInsert(this.db, tasksToInsert);
