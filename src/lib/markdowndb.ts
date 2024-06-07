@@ -1,7 +1,13 @@
 import path from "path";
 import knex, { Knex } from "knex";
 
-import { MddbFile, MddbTag, MddbLink, MddbFileTag, MddbTask } from "./schema.js";
+import {
+  MddbFile,
+  MddbTag,
+  MddbLink,
+  MddbFileTag,
+  MddbTask,
+} from "./schema.js";
 import { indexFolder, shouldIncludeFile } from "./indexFolder.js";
 import {
   resetDatabaseTables,
@@ -183,7 +189,7 @@ export class MarkdownDB {
 
     writeJsonToFile(".markdowndb/files.json", fileObjects);
     await MddbFile.batchInsert(this.db, filesToInsert);
-    await MddbTag.batchInsert(this.db, tagsToInsert);
+    // await MddbTag.batchInsert(this.db, tagsToInsert);
     await MddbFileTag.batchInsert(this.db, fileTagsToInsert);
     await MddbLink.batchInsert(this.db, getUniqueValues(linksToInsert));
     await MddbTask.batchInsert(this.db, tasksToInsert);

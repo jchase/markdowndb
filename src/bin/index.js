@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { MarkdownDB } from "../lib/markdowndb.js";
 
+console.log("Running JMC version of mddb 0.9.5");
+
 // TODO get these from markdowndb.config.js or something
 const dbPath = "markdown.db";
 const ignorePatterns = [/Excalidraw/, /\.obsidian/, /DS_Store/];
